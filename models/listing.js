@@ -11,9 +11,9 @@ const listingSchema = new Schema({
     required: true,
   },
   image: {
-    type: String,   
-    default:
-      "https://images.unsplash.com/photo-1507525428034-b723cf961d3e", // koi default img dalna ho to
+    url: "string",
+    filename: "string",
+  
   },
   price: {
     type: Number,

@@ -3,7 +3,7 @@
  <div class="row mt-3">
         <div class="col-8 offset-2">
     <h3>Edit your Listing</h3>
-    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data">
 
           <div class="mb-3">
              <lable for="title" class="form-label">Title</lable>
@@ -22,19 +22,24 @@
                 Please enter a valid description
             </div>
       </div>
+
+      <div class="mb-3">
+        original Listing Image <br/>
+        <img src="<%= originalImageUrl %>?w=400&h=300&fit=crop" class="listing-image">
+
+       
+      </div>
       
       <div class="mb-3">
-        <lable for="image" class="form-label">Image</lable>
-      <input name="listing[image]" value="<%= listing.image %>" type="text" class="form-control" required />
-      <div class="invalid-feedback">
-                Please enter a valid image URL
-            </div>
+        <lable for="image" class="form-label"> Uplod Image</lable>
+      <input name="listing[image]"  type="file" class="form-control" />
+
       </div>
 
     <div class="row">
       <div class="mb-3 col-md-4">
          <lable for="price" class="form-label">Price</lable>
-         <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" required />
+         <input name="listing[price]" value="<%= listing.price %>" type="number" class="form-control" />
          <div class="invalid-feedback">
                 Please enter a valid price
             </div>
@@ -62,8 +67,10 @@
                 Please enter a valid country
             </div>
       </div>
+      </div>
       <button class="btn btn-dark add-btn mt-3">Edit</button>
     </form>
     </div>
     </div>
+    
   
