@@ -117,3 +117,16 @@ background-color: white;
   object-fit: cover;
   border-radius: 10px;
 }
+
+.card {
+  border-radius: 10px;
+}
+.card-body {
+  word-wrap: break-word;
+}
+@media (max-width: 768px) {
+  .show-card {
+    width: 90% !important;
+    margin: auto;
+  }
+}

@@ -20,7 +20,7 @@
     <% if(currentUser && listing.owner._id.equals(currentUser._id)) { %>
       <div class="btns">
         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-2 offset-3 add-btn">Edit</a>
-        <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+        <form method="post" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
           <button class="btn btn-dark offset-10">Delete</button>
         </form>
       </div>
@@ -31,26 +31,25 @@
       <% if(currentUser) { %>
         <h4>Leave a Review</h4>
         <form action="/listings/<%= listing.id %>/reviews" method="POST" novalidate class="needs-validation">
-          <!-- Starability Rating -->
+          <!-- Star Rating -->
           <fieldset class="starability-slot">
-  <legend>Rating:</legend>
+            <legend>Rating:</legend>
 
-  <input type="radio" id="rate1" name="review[rating]" value="1" checked />
-  <label for="rate1" title="Terrible">1 star</label>
+            <input type="radio" id="rate1" name="review[rating]" value="1" checked />
+            <label for="rate1" title="Terrible">1 star</label>
 
-  <input type="radio" id="rate2" name="review[rating]" value="2" />
-  <label for="rate2" title="Not good">2 stars</label>
+            <input type="radio" id="rate2" name="review[rating]" value="2" />
+            <label for="rate2" title="Not good">2 stars</label>
 
-  <input type="radio" id="rate3" name="review[rating]" value="3" />
-  <label for="rate3" title="Average">3 stars</label>
+            <input type="radio" id="rate3" name="review[rating]" value="3" />
+            <label for="rate3" title="Average">3 stars</label>
 
-  <input type="radio" id="rate4" name="review[rating]" value="4" />
-  <label for="rate4" title="Very good">4 stars</label>
+            <input type="radio" id="rate4" name="review[rating]" value="4" />
+            <label for="rate4" title="Very good">4 stars</label>
 
-  <input type="radio" id="rate5" name="review[rating]" value="5" />
-  <label for="rate5" title="Amazing">5 stars</label>
-</fieldset>
-
+            <input type="radio" id="rate5" name="review[rating]" value="5" />
+            <label for="rate5" title="Amazing">5 stars</label>
+          </fieldset>
 
           <!-- Comment -->
           <div class="mb-3 mt-3">
@@ -66,26 +65,26 @@
       <hr>
       <p><b>All Reviews</b></p>
 
+      <!-- ✅ Responsive Review Section -->
       <div class="row">
         <% for(let review of listing.reviews){ %>
-          <div class="card col-5 ms-3 mb-3">
-            <div class="card-body">
-              <h5 class="card-title">@ <%= review.author.username %></h5>
-                  <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
-              <p class="card-text">Comment: <%= review.comment %></p>
-          
+          <div class="col-lg-4 col-md-6 col-12 mb-3 d-flex">
+            <div class="card flex-fill shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">@ <%= review.author.username %></h5>
+                <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+                <p class="card-text">Comment:<br> <%= review.comment %></p>
+              </div>
+
+              <% if(currentUser && (review.author._id.equals(currentUser._id) || listing.owner._id.equals(currentUser._id))) { %>
+                <form class="mb-3 ms-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                  <button class="btn btn-sm btn-dark">Delete</button>
+                </form>
+              <% } %>
             </div>
-
-
-            <% if(currentUser && (review.author._id.equals(currentUser._id) || listing.owner._id.equals(currentUser._id))) { %>
-              <form class="mb-3" method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                <button class="btn btn-sm btn-dark">Delete</button>
-              </form>
-            <% } %>
           </div>
         <% } %>
       </div>
-
     </div>
   </div>
 </body>

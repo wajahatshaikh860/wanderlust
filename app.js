@@ -52,7 +52,7 @@ const store = MongoStore.create({
 });
 
 store.on("error",()=>{
-  console.log("ERROR in MONGO SESSION STORE",err);
+  console.log("ERROR in MONgitGO SESSION STORE",err);
 });
 
 const sessionOptions = {
@@ -66,10 +66,6 @@ const sessionOptions = {
     httpOnly : true,
   },
 };
-
-// app.get("/", (req, res) => {
-//   res.send("Hi, I am root");
-// });
 
 
 
@@ -91,19 +87,6 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;         // current user
     next();
 });
-
-
-// app.get("/demouser", async (req,res)=>{
-//   let fakeUser = new User ({
-//     email: "student@gmail.com",
-//     username: "delta-student"
-//   });
-//   let registeredUser = await User.register(fakeUser,"helloworld");
-//   res.send(registeredUser);
-
-// });
-
-
 
 
 app.use("/listings", listingsRouter);
