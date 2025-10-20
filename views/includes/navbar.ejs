@@ -36,13 +36,22 @@
   background-color: #e03138;
 }
 
-
 .navbar-search .btn-search:hover {
   background-color: #e03138;
   color: white;
 }
-</style>
 
+/* Profile dropdown logout link */
+.dropdown-menu .nav-link {
+  background-color: #938c8c; /* background color */
+  color: white;              /* text color */
+}
+
+.dropdown-menu .nav-link:hover {
+  background-color: #918c8c; /* darker on hover */
+  color: white;
+}
+</style>
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
@@ -69,13 +78,34 @@
 
       <!-- Right links -->
       <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/listings/new">Add new listing</a>
         <% if(!currentUser){ %>
           <a class="nav-link" href="/signup"><b>Signup</b></a>
           <a class="nav-link" href="/login"><b>Login</b></a>
         <% } %>
+
         <% if(currentUser){ %>
-          <a class="nav-link" href="/logout"><b>Logout</b></a>
+          <!-- Normal user links -->
+          <% if(currentUser.role === 'user'){ %>
+            <a class="nav-link" href="/bookings/my">My Bookings</a>
+          <% } %>
+
+          <!-- Hotel owner links -->
+          <% if(currentUser.role === 'hotelOwner'){ %>
+            <a class="nav-link" href="/listings/new">Add new listing</a>
+            <a class="nav-link" href="/bookings/owner">Incoming Bookings</a>
+          <% } %>
+
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarProfileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              👤 <%= currentUser.username %>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarProfileDropdown">
+              <li>
+                <a class="nav-link" href="/logout"><b>Logout</b></a>
+              </li>
+            </ul>
+          </li>
         <% } %>
       </div>
     </div>

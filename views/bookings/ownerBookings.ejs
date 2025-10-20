@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4 mb-5">
+  <h2 class="text-center mb-4">Bookings on Your Listings</h2>
+
+  <% if (!bookings || bookings.length === 0) { %>
+    <p class="text-center text-muted">No bookings yet on your listings.</p>
+  <% } else { %>
+    <div class="row justify-content-center">
+      <% bookings.forEach(b => { %>
+        <div class="col-12 col-md-8 col-lg-6 mb-3">
+          <div class="card shadow-sm border-0 rounded-4 p-3">
+            <h5><%= b.listing ? b.listing.title : "Listing deleted" %></h5>
+            <p class="text-muted">
+              Booked by: <strong><%= b.user ? b.user.username : "User deleted" %></strong>
+            </p>
+            <p>Check-in: <%= b.checkin ? b.checkin.toDateString() : "N/A" %></p>
+            <p>Check-out: <%= b.checkout ? b.checkout.toDateString() : "N/A" %></p>
+            <p>Guests: <%= b.guests || "N/A" %></p>
+
+            <p class="mt-2">
+              Status:
+              <% if (b.status === "Pending") { %>
+                <span class="badge bg-warning text-dark">Pending</span>
+              <% } else if (b.status === "Accepted") { %>
+                <span class="badge bg-success">Accepted</span>
+              <% } else { %>
+                <span class="badge bg-danger">Rejected</span>
+              <% } %>
+            </p>
+
+            <% if (b.status === "Pending") { %>
+              <div class="mt-2">
+                <form action="/bookings/<%= b._id %>/accept" method="POST" class="d-inline">
+                  <button class="btn btn-success btn-sm">Accept</button>
+                </form>
+                <form action="/bookings/<%= b._id %>/reject" method="POST" class="d-inline">
+                  <button class="btn btn-danger btn-sm">Reject</button>
+                </form>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>

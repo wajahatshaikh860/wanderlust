@@ -1,0 +1,41 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="container mt-4 mb-5">
+  <h2 class="text-center mb-4">My Bookings</h2>
+
+  <% if (!bookings || bookings.length === 0) { %>
+    <p class="text-center text-muted">You have no bookings yet.</p>
+  <% } else { %>
+    <div class="row justify-content-center">
+      <% bookings.forEach(b => { %>
+        <div class="col-12 col-md-8 col-lg-6 mb-3">
+          <div class="card shadow-sm border-0 rounded-4 p-3">
+            <h5><%= b.listing ? b.listing.title : "Listing Deleted" %></h5>
+            <p>Check-in: <%= b.checkin ? b.checkin.toDateString() : "N/A" %></p>
+            <p>Check-out: <%= b.checkout ? b.checkout.toDateString() : "N/A" %></p>
+            <p>Guests: <%= b.guests || "N/A" %></p>
+            
+            <p class="mt-2">
+              Status:
+              <% if (b.status === "Pending") { %>
+                <span class="badge bg-warning text-dark">Pending</span>
+              <% } else if (b.status === "Accepted") { %>
+                <span class="badge bg-success">Accepted</span>
+              <% } else { %>
+                <span class="badge bg-danger">Rejected</span>
+              <% } %>
+            </p>
+
+            <p class="text-muted small">Booked on: <%= b.createdAt.toDateString() %></p>
+
+            <% if (b.status === "Pending") { %>
+              <form action="/bookings/<%= b._id %>?_method=DELETE" method="POST" class="mt-2">
+                <button class="btn btn-outline-danger btn-sm">Cancel Booking</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>

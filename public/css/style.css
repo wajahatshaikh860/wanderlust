@@ -130,3 +130,20 @@ background-color: white;
     margin: auto;
   }
 }
+
+/* Only apply for mobile (collapsed) menu */
+@media (max-width: 767.98px) {
+  .navbar-collapse {
+    background-color: #6d6a6a; /* mobile dropdown background */
+  }
+
+  .navbar-collapse .nav-link {
+    color: white !important; /* links color */
+  }
+
+  .navbar-collapse .nav-link:hover {
+    color: #ffe5e0 !important; /* hover color */
+  }
+}
+
+

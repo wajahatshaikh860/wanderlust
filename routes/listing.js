@@ -3,52 +3,55 @@ const router = express.Router();
 const wrapAsync = require("../utils/WrapAsync.js");
 
 const Listing = require("../models/listing.js");
-const { isLoggedIn ,isOwner , validateListing } = require("../middleware.js");
+const { isLoggedIn, isOwner, validateListing, isHotelOwner } = require("../middleware.js");
 
 const listingController = require("../controllers/listings.js");
 const multer  = require('multer')
 const {storage} = require("../cloudConfig.js")
 const upload = multer({ storage});
 
+// INDEX & CREATE
 router
-.route("/")
-.get(wrapAsync (listingController.index))
- .post(
-  isLoggedIn,
-  //validateListing, 
-  upload.single("listing[image]"),
-  wrapAsync(listingController.createListing)
-);
+  .route("/")
+  .get(wrapAsync(listingController.index))
+  .post(
+    isLoggedIn,
+    isHotelOwner, // Only hotel owners can create listings
+    //validateListing,
+    upload.single("listing[image]"),
+    wrapAsync(listingController.createListing)
+  );
 
+// NEW
+router.get("/new", isLoggedIn, isHotelOwner, listingController.renderNewForm );
 
-//New Route
-router.get("/new",isLoggedIn, listingController.renderNewForm );
+// SHOW
+router.get("/:id", wrapAsync(listingController.showListing));
 
-//Show Route
-router.get("/:id", wrapAsync (listingController.showListing)
-);
-
-
-
-//Edit Route
+// EDIT
 router.get("/:id/edit",
   isLoggedIn,
-  isOwner,
-  wrapAsync (listingController.renderEditForm));
+  isHotelOwner, // Only hotel owners can access edit
+  isOwner,      // Must be the owner of this listing
+  wrapAsync(listingController.renderEditForm)
+);
 
-//Update Route
+// UPDATE
 router.put("/:id",
   isLoggedIn,
+  isHotelOwner,
   isOwner,
   upload.single("listing[image]"),
   validateListing,
-  wrapAsync (listingController.updateListing));
+  wrapAsync(listingController.updateListing)
+);
 
-//Delete Route
+// DELETE
 router.delete("/:id",
   isLoggedIn,
+  isHotelOwner,
   isOwner, 
-  wrapAsync (listingController.deleteListing));
-
+  wrapAsync(listingController.deleteListing)
+);
 
 module.exports = router;

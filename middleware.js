@@ -61,3 +61,20 @@ module.exports.isReviewAuthor = async (req,res,next) =>{
     next();
 };
 
+// middleware.js
+module.exports.isHotelOwner = (req, res, next) => {
+  if (!req.isAuthenticated() || req.user.role !== "hotelOwner") {
+    req.flash("error", "Access denied! Only hotel owners can do that.");
+    return res.redirect("/listings");
+  }
+  next();
+};
+
+module.exports.isUser = (req, res, next) => {
+  if (!req.isAuthenticated() || req.user.role !== "user") {
+    req.flash("error", "Access denied! Only users can do that.");
+    return res.redirect("/listings");
+  }
+  next();
+};
+
